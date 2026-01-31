@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-amiri: "Amiri", serif;
+  --font-scheherazade: "Scheherazade New", serif;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+  font-family: sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
