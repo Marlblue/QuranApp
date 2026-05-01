@@ -21,69 +21,69 @@ const DailyPrayers: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl animate-in fade-in duration-500">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-emerald-800 mb-2">Doa Harian</h1>
-        <p className="text-gray-600">
+    <div className="max-w-3xl mx-auto px-4 py-6 animate-fade-in">
+      <div className="mb-6">
+        <h1 className="font-display text-2xl font-bold text-text-heading">
+          Doa Harian
+        </h1>
+        <p className="text-sm text-text-muted mt-1">
           Kumpulan doa sehari-hari dari Al-Quran dan Hadits
         </p>
       </div>
 
-      <div className="max-w-md mx-auto mb-8 relative">
+      <div className="mb-6 relative">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-subtle w-5 h-5 pointer-events-none" />
         <input
           type="text"
-          placeholder="Cari Doa..."
+          placeholder="Cari doa..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-3 pl-10 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm"
+          className="w-full pl-12 pr-4 py-3 rounded-2xl bg-surface-input border border-border text-text placeholder:text-text-subtle focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all text-sm"
         />
-        <Search className="absolute left-3 top-3.5 text-gray-400" size={20} />
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 stagger-children">
         {filteredPrayers.map((prayer) => (
           <div
             key={prayer.id}
-            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+            className="p-5 rounded-2xl bg-surface-card border border-border"
           >
             <div className="flex justify-between items-start mb-4">
-              <h3 className="font-bold text-lg text-emerald-800">
+              <h3 className="font-bold text-text-heading">
                 {prayer.title}
               </h3>
-              <div className="flex gap-2">
-                <button
-                  onClick={() =>
-                    handleCopy(
-                      `${prayer.title}\n\n${prayer.arabic}\n${prayer.translation}`,
-                      prayer.id,
-                    )
-                  }
-                  className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
-                  title="Salin Doa"
-                >
-                  {copiedId === prayer.id ? (
-                    <Check size={18} />
-                  ) : (
-                    <Copy size={18} />
-                  )}
-                </button>
-              </div>
+              <button
+                onClick={() =>
+                  handleCopy(
+                    `${prayer.title}\n\n${prayer.arabic}\n${prayer.translation}`,
+                    prayer.id,
+                  )
+                }
+                className="p-2 text-text-subtle hover:text-accent hover:bg-surface-hover rounded-xl transition-all active:scale-90 flex-shrink-0"
+              >
+                {copiedId === prayer.id ? (
+                  <Check size={16} className="text-gold-400" />
+                ) : (
+                  <Copy size={16} />
+                )}
+              </button>
             </div>
 
-            <div className="text-right mb-4">
-              <p className="font-amiri text-2xl leading-loose text-gray-800">
+            <div className="text-right mb-4" dir="rtl">
+              <p className="font-arabic text-xl leading-loose text-text-heading">
                 {prayer.arabic}
               </p>
             </div>
 
             <div className="space-y-2">
-              <p className="text-emerald-600 font-medium italic text-sm">
+              <p className="text-accent/80 text-sm italic">
                 {prayer.latin}
               </p>
-              <p className="text-gray-600">{prayer.translation}</p>
-              <p className="text-xs text-gray-400 mt-2 flex items-center gap-1">
-                <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-                {prayer.source}
+              <p className="text-sm text-text-secondary leading-relaxed">
+                {prayer.translation}
+              </p>
+              <p className="text-[11px] text-text-subtle mt-2">
+                • {prayer.source}
               </p>
             </div>
           </div>

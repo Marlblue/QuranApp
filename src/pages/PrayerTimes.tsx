@@ -40,7 +40,6 @@ const PrayerTimes = () => {
             const diff = prayerTime - currentTime;
             const hoursLeft = Math.floor(diff / 60);
             const minutesLeft = diff % 60;
-
             setNextPrayer({
               name: prayer.name,
               time: prayer.time,
@@ -49,8 +48,6 @@ const PrayerTimes = () => {
             return;
           }
         }
-
-        // If no prayer left today, show Fajr tomorrow
         setNextPrayer({
           name: "Subuh",
           time: data.timings.Fajr,
@@ -64,47 +61,32 @@ const PrayerTimes = () => {
     }
   }, [data, prayers]);
 
-  const activePrayerIndex = prayers.findIndex(
-    (p) => p.name === nextPrayer?.name,
-  );
-  console.log(activePrayerIndex); // Used for debugging or future UI logic
-
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl animate-in fade-in duration-500">
-      <div className="bg-linear-to-br from-emerald-600 to-teal-700 rounded-2xl p-6 text-white shadow-xl mb-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-center md:text-left">
-            <h1 className="text-3xl font-bold mb-2">Jadwal Sholat</h1>
-            <div className="flex items-center justify-center md:justify-start gap-2 text-emerald-100">
-              <MapPin size={18} />
+    <div className="max-w-3xl mx-auto px-4 py-6 animate-fade-in">
+      {/* Header Card */}
+      <div className="bg-forest-800 rounded-2xl p-6 text-text mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5">
+          <div>
+            <h1 className="font-display text-2xl font-bold mb-2">Jadwal Sholat</h1>
+            <div className="flex items-center gap-2 text-text-muted text-sm mb-1">
+              <MapPin size={14} />
               <select
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="bg-transparent border-b border-emerald-400 focus:outline-none focus:border-white pb-1 cursor-pointer"
+                className="bg-transparent border-b border-border focus:outline-none focus:border-text-heading pb-0.5 cursor-pointer text-sm"
               >
-                <option value="Jakarta" className="text-gray-800">
-                  Jakarta
-                </option>
-                <option value="Bandung" className="text-gray-800">
-                  Bandung
-                </option>
-                <option value="Surabaya" className="text-gray-800">
-                  Surabaya
-                </option>
-                <option value="Yogyakarta" className="text-gray-800">
-                  Yogyakarta
-                </option>
-                <option value="Medan" className="text-gray-800">
-                  Medan
-                </option>
-                <option value="Makassar" className="text-gray-800">
-                  Makassar
-                </option>
+                {["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Medan", "Makassar"].map(
+                  (c) => (
+                    <option key={c} value={c} className="bg-surface text-text">
+                      {c}
+                    </option>
+                  ),
+                )}
               </select>
             </div>
             {data && (
-              <div className="flex items-center justify-center md:justify-start gap-2 text-emerald-100 mt-2 text-sm">
-                <Calendar size={16} />
+              <div className="flex items-center gap-2 text-text-muted text-xs">
+                <Calendar size={12} />
                 <span>
                   {data.date.readable} / {data.date.hijri.date}{" "}
                   {data.date.hijri.month.en}
@@ -114,19 +96,19 @@ const PrayerTimes = () => {
           </div>
 
           {isLoading ? (
-            <Loader2 className="animate-spin" size={40} />
+            <Loader2 className="animate-spin text-text-muted" size={32} />
           ) : error ? (
-            <p className="text-red-200">Gagal memuat jadwal</p>
+            <p className="text-red-400 text-sm">Gagal memuat</p>
           ) : (
             nextPrayer && (
-              <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center min-w-50 border border-white/20">
-                <p className="text-emerald-100 text-sm mb-1">
+              <div className="bg-surface-card rounded-xl p-4 text-center min-w-[120px] border border-border">
+                <p className="text-text-muted text-xs mb-0.5">
                   Menuju {nextPrayer.name}
                 </p>
-                <p className="text-4xl font-bold font-mono tracking-wider">
+                <p className="text-2xl font-bold font-mono tracking-wider text-text-heading">
                   {nextPrayer.timeLeft}
                 </p>
-                <p className="text-emerald-100 text-xs mt-1">
+                <p className="text-text-muted text-[11px]">
                   Pukul {nextPrayer.time}
                 </p>
               </div>
@@ -135,48 +117,53 @@ const PrayerTimes = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {prayers.map((prayer) => (
-          <div
-            key={prayer.name}
-            className={`
-                relative overflow-hidden rounded-xl p-4 text-center transition-all duration-300
-                ${
-                  nextPrayer?.name === prayer.name
-                    ? "bg-emerald-50 border-2 border-emerald-500 shadow-md transform -translate-y-1"
-                    : "bg-white border border-gray-100 hover:shadow-lg hover:border-emerald-200"
-                }
-            `}
-          >
-            <div className="flex flex-col items-center gap-2">
+      {/* Prayer Times Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 stagger-children">
+        {prayers.map((prayer) => {
+          const isNext = nextPrayer?.name === prayer.name;
+          return (
+            <div
+              key={prayer.name}
+              className={`p-4 rounded-2xl text-center transition-all ${
+                isNext
+                  ? "bg-forest-800 border-2 border-gold-400 shadow-md"
+                  : "bg-surface-card border border-border"
+              }`}
+            >
               <Clock
-                size={24}
-                className={
-                  nextPrayer?.name === prayer.name
-                    ? "text-emerald-600"
-                    : "text-gray-400"
-                }
+                size={20}
+                className={`mx-auto mb-2 ${
+                  isNext
+                    ? "text-gold-400"
+                    : "text-text-subtle"
+                }`}
               />
-              <div>
-                <h3
-                  className={`font-semibold ${nextPrayer?.name === prayer.name ? "text-gray-800" : "text-gray-500"}`}
-                >
-                  {prayer.name}
-                </h3>
-                <p
-                  className={`text-xl font-bold font-mono ${nextPrayer?.name === prayer.name ? "text-emerald-600" : "text-gray-800"}`}
-                >
-                  {prayer.time || "--:--"}
-                </p>
-              </div>
+              <h3
+                className={`text-sm font-semibold mb-1 ${
+                  isNext
+                    ? "text-text-heading"
+                    : "text-text-muted"
+                }`}
+              >
+                {prayer.name}
+              </h3>
+              <p
+                className={`text-xl font-bold font-mono ${
+                  isNext
+                    ? "text-gold-400"
+                    : "text-text-heading"
+                }`}
+              >
+                {prayer.time || "--:--"}
+              </p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      <div className="mt-8 text-center text-gray-500 text-sm">
-        <p>Jadwal sholat disediakan oleh Aladhan.com</p>
-      </div>
+      <p className="mt-8 text-center text-xs text-text-subtle">
+        Jadwal sholat oleh Aladhan.com
+      </p>
     </div>
   );
 };

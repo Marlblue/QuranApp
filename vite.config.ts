@@ -12,27 +12,23 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "masked-icon.svg"],
+      includeAssets: ["favicon.png"],
       manifest: {
         name: "QuranApp Digital",
         short_name: "QuranApp",
         description: "Aplikasi Al-Quran Digital dengan Audio dan Jadwal Sholat",
-        theme_color: "#059669",
-        background_color: "#ffffff",
+        theme_color: "#1B3022",
+        background_color: "#FCF9F2",
         display: "standalone",
         icons: [
           {
-            src: "pwa-192x192.png",
+            src: "manifest-icon-192.maskable.png",
             sizes: "192x192",
             type: "image/png",
+            purpose: "any maskable",
           },
           {
-            src: "pwa-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-          {
-            src: "pwa-512x512.png",
+            src: "manifest-icon-512.maskable.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",

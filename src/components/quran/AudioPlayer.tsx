@@ -9,6 +9,7 @@ const AudioPlayer = () => {
     currentAyah,
     play,
     pause,
+    stop,
     playNext,
     playPrevious,
     currentTime,
@@ -19,7 +20,6 @@ const AudioPlayer = () => {
     playbackRate,
   } = useAudioStore();
 
-  // Initialize the audio logic
   useAudio();
 
   if (!currentSurah) return null;
@@ -35,94 +35,88 @@ const AudioPlayer = () => {
     seek(time);
   };
 
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-50 animate-in slide-in-from-bottom duration-300">
-      <div className="container mx-auto max-w-3xl flex flex-col gap-3">
-        {/* Error Message */}
+    <div className="fixed bottom-[64px] lg:bottom-0 left-0 right-0 z-50 glass border-t border-border animate-slide-up">
+      {/* Progress bar (thin line at top) */}
+      <div className="h-0.5 bg-forest-800">
+        <div
+          className="h-full bg-gold-400 transition-all duration-150"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 py-3">
+        {/* Error */}
         {error && (
-          <div className="bg-red-50 text-red-600 text-sm px-3 py-2 rounded-md flex items-center gap-2 mb-2 animate-in fade-in slide-in-from-bottom-2">
-            <span className="font-semibold">Error:</span> {error}
-          </div>
+          <div className="text-xs text-red-400 mb-2 font-medium">{error}</div>
         )}
 
-        {/* Progress Bar */}
-        <div className="flex items-center gap-3 w-full">
-          <span className="text-xs text-gray-500 w-10 text-right font-mono">
-            {formatTime(currentTime)}
-          </span>
-          <input
-            type="range"
-            min="0"
-            max={duration || 100}
-            value={currentTime}
-            onChange={handleSeek}
-            className="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600 hover:accent-emerald-700 transition-all"
-          />
-          <span className="text-xs text-gray-500 w-10 font-mono">
-            {formatTime(duration)}
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-sm font-bold text-gray-900 truncate max-w-37.5 sm:max-w-xs">
+        <div className="flex items-center gap-3">
+          {/* Info */}
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-text-heading truncate">
               Surah {currentSurah}
-            </span>
-            <span className="text-xs text-emerald-600 font-medium">
-              {currentAyah && currentAyah > 0
-                ? `Ayat ${currentAyah}`
-                : "Full Surah"}
-            </span>
+            </p>
+            <p className="text-xs text-gold-400 font-medium">
+              {currentAyah && currentAyah > 0 ? `Ayat ${currentAyah}` : "Full"}
+            </p>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Time */}
+          <span className="text-[10px] text-text-subtle font-mono hidden sm:block">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </span>
+
+          {/* Controls */}
+          <div className="flex items-center gap-1">
             <button
               onClick={playPrevious}
-              className="text-gray-400 hover:text-emerald-600 transition-colors p-2 hover:bg-gray-100 rounded-full active:scale-95"
-              title="Ayat Sebelumnya"
+              className="p-2 text-text-subtle hover:text-text-heading rounded-xl transition-colors active:scale-90"
             >
-              <SkipBack size={20} className="fill-current" />
+              <SkipBack size={16} />
             </button>
-
             <button
               onClick={isPlaying ? pause : play}
-              className="w-12 h-12 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full flex items-center justify-center transition-all shadow-md hover:shadow-lg active:scale-95"
+              className="w-10 h-10 bg-accent text-surface rounded-full flex items-center justify-center active:scale-90 transition-transform"
             >
               {isPlaying ? (
-                <Pause size={24} className="fill-current" />
+                <Pause size={18} className="fill-current" />
               ) : (
-                <Play size={24} className="fill-current ml-1" />
+                <Play size={18} className="fill-current ml-0.5" />
               )}
             </button>
-
             <button
               onClick={playNext}
-              className="text-gray-400 hover:text-emerald-600 transition-colors p-2 hover:bg-gray-100 rounded-full active:scale-95"
-              title="Ayat Selanjutnya"
+              className="p-2 text-text-subtle hover:text-text-heading rounded-xl transition-colors active:scale-90"
             >
-              <SkipForward size={20} className="fill-current" />
+              <SkipForward size={16} />
             </button>
-
-            <div className="w-px h-8 bg-gray-200 mx-2 hidden sm:block"></div>
-
-            <button
-              onClick={stop}
-              className="text-gray-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-full active:scale-95"
-              title="Stop"
-            >
-              <X size={20} />
-            </button>
-
-            {/* Speed Control - Mobile Friendly Cycle Button */}
             <button
               onClick={cycleSpeed}
-              className="flex items-center justify-center w-10 h-8 text-xs font-bold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 rounded-md transition-colors active:scale-95 ml-2"
-              title="Kecepatan Pemutaran"
+              className="text-[11px] font-bold text-gold-400 bg-forest-800 px-2 py-1 rounded-lg active:scale-90 transition-transform ml-1"
             >
               {playbackRate}x
             </button>
+            <button
+              onClick={stop}
+              className="p-2 text-text-subtle hover:text-red-400 rounded-xl transition-colors active:scale-90 ml-1"
+            >
+              <X size={16} />
+            </button>
           </div>
         </div>
+
+        {/* Seek bar - hidden on mobile, visible on larger */}
+        <input
+          type="range"
+          min="0"
+          max={duration || 100}
+          value={currentTime}
+          onChange={handleSeek}
+          className="w-full mt-2 hidden sm:block"
+        />
       </div>
     </div>
   );

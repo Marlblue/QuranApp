@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSurahList } from "@/hooks/useSurah";
 import SurahCard from "@/components/quran/SurahCard";
-import { Search, BookOpen } from "lucide-react";
+import { Search, BookOpen, ChevronRight } from "lucide-react";
 import { useLastReadStore } from "@/store/useLastReadStore";
 import { Link } from "react-router-dom";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
@@ -32,22 +32,6 @@ const Home = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="container mx-auto p-4 flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-600"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto p-4 text-center text-red-500">
-        Error loading surahs: {error.message}
-      </div>
-    );
-  }
-
   const filteredSurahs = surahs?.filter(
     (surah) =>
       surah.name_latin.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -56,116 +40,107 @@ const Home = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl animate-in fade-in duration-500">
-      {/* Hero Section */}
-      <div className="mb-12 text-center md:text-left md:flex md:items-end md:justify-between">
-        <div>
-          <p className="text-emerald-600 font-semibold mb-2 tracking-wide uppercase text-sm">
-            {getGreeting()}
-          </p>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-3">
-            QuranApp
-          </h1>
-          <p className="text-gray-500 text-lg max-w-md">
-            Baca Al-Quran dengan nyaman, dimana saja dan kapan saja.
-          </p>
-        </div>
-        <div className="mt-6 md:mt-0 flex flex-col items-center md:items-end gap-3">
-          <div className="flex gap-2">
-            <span className="px-4 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm font-medium">
-              {new Date().toLocaleDateString("id-ID", { weekday: "long" })}
-            </span>
-            <span className="px-4 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm font-medium">
-              {new Date().toLocaleDateString("id-ID", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </span>
-          </div>
-          <p className="text-sm font-bold text-emerald-700 bg-emerald-50 px-5 py-2 rounded-full border border-emerald-100">
+    <div className="max-w-5xl mx-auto px-4 py-6 animate-fade-in">
+      {/* Hero */}
+      <div className="mb-8">
+        <p className="text-gold-400 font-semibold text-sm tracking-wide mb-1">
+          {getGreeting()} 👋
+        </p>
+        <h1 className="font-display text-3xl md:text-4xl font-bold text-text-heading tracking-tight mb-2">
+          QuranApp
+        </h1>
+        <div className="flex flex-wrap items-center gap-2 text-sm text-text-muted">
+          <span>
+            {new Date().toLocaleDateString("id-ID", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </span>
+          <span className="text-text-subtle">•</span>
+          <span className="text-gold-400 font-medium">
             {getHijriDate()} H
-          </p>
+          </span>
         </div>
       </div>
 
-      {/* Last Read Section */}
+      {/* Last Read */}
       {lastRead && (
-        <div className="mb-12 bg-linear-to-br from-emerald-600 to-teal-800 rounded-[2rem] p-8 md:p-10 text-white shadow-2xl shadow-emerald-900/20 relative overflow-hidden group transition-transform hover:scale-[1.01] duration-500">
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4 text-emerald-100/90">
-                <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <BookOpen size={16} />
+        <Link
+          to={`/surah/${lastRead.surahNumber}#ayah-${lastRead.ayahNumber}`}
+          className="block mb-8 group"
+        >
+          <div className="bg-forest-100 rounded-2xl p-5 relative overflow-hidden transition-transform active:scale-[0.98]">
+            <div className="relative z-10 flex items-center justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2 text-accent">
+                  <BookOpen size={14} />
+                  <span className="text-xs font-semibold uppercase tracking-wider">
+                    Terakhir Dibaca
+                  </span>
                 </div>
-                <span className="font-semibold tracking-wider text-xs uppercase">
-                  Terakhir Dibaca
-                </span>
+                <h2 className="font-display text-2xl font-bold text-text-heading truncate mb-0.5">
+                  {lastRead.surahName}
+                </h2>
+                <p className="text-text-secondary text-sm">
+                  Ayat {lastRead.ayahNumber}
+                </p>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-2 font-amiri tracking-wide leading-relaxed">
-                {lastRead.surahName}
-              </h2>
-              <p className="text-emerald-100 text-xl font-medium">
-                Ayat {lastRead.ayahNumber}
-              </p>
+              <div className="w-10 h-10 bg-surface-hover rounded-xl flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                <ChevronRight size={20} className="text-text-muted" />
+              </div>
             </div>
-            <Link
-              to={`/surah/${lastRead.surahNumber}#ayah-${lastRead.ayahNumber}`}
-              className="inline-flex items-center justify-center bg-white text-emerald-800 px-8 py-4 rounded-2xl font-bold hover:bg-emerald-50 transition-all shadow-lg hover:shadow-xl active:scale-95 w-full md:w-auto gap-2 group/btn"
-            >
-              Lanjut Baca
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="group-hover/btn:translate-x-1 transition-transform"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </Link>
+            <div className="absolute -right-6 -bottom-6 opacity-[0.05]">
+              <BookOpen size={120} strokeWidth={1} />
+            </div>
           </div>
-
-          {/* Decorative Elements */}
-          <div className="absolute -right-12 -bottom-24 opacity-10 transform rotate-12 transition-transform group-hover:scale-110 duration-700 ease-out">
-            <BookOpen size={350} />
-          </div>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-black opacity-10 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
-        </div>
+        </Link>
       )}
 
-      {/* Search Section */}
-      <div className="mb-10 sticky top-4 z-30 -mx-4 px-4 md:static md:mx-0 md:p-0">
-        <div className="relative max-w-2xl mx-auto md:mx-0 group">
-          <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-            <Search className="text-gray-400 group-focus-within:text-emerald-500 transition-colors w-5 h-5" />
-          </div>
+      {/* Search */}
+      <div className="mb-6 sticky top-14 z-30 -mx-4 px-4 py-3 glass">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-subtle w-5 h-5 pointer-events-none" />
           <input
             type="text"
-            placeholder="Cari Surah..."
+            placeholder="Cari surah..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-14 pr-6 py-4 rounded-2xl border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-emerald-500 shadow-lg shadow-gray-100/50 focus:shadow-xl focus:shadow-emerald-500/10 outline-none transition-all duration-300 bg-white/90 backdrop-blur-xl text-lg placeholder:text-gray-400"
+            className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-surface-input border border-border text-text placeholder:text-text-subtle focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all text-[15px]"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filteredSurahs?.map((surah) => (
-          <SurahCard key={surah.number} surah={surah} />
-        ))}
-      </div>
+      {/* Loading */}
+      {isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="skeleton h-20 rounded-2xl" />
+          ))}
+        </div>
+      )}
+
+      {/* Error */}
+      {error && (
+        <div className="text-center py-10 text-red-400">
+          Gagal memuat surah: {error.message}
+        </div>
+      )}
+
+      {/* Surah List */}
+      {!isLoading && !error && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 stagger-children">
+          {filteredSurahs?.map((surah) => (
+            <SurahCard key={surah.number} surah={surah} />
+          ))}
+        </div>
+      )}
 
       {filteredSurahs?.length === 0 && (
-        <div className="text-center py-10 text-gray-500">
-          Tidak ada surah yang ditemukan.
+        <div className="text-center py-16 text-text-muted">
+          <p className="text-lg font-medium mb-1">Tidak ditemukan</p>
+          <p className="text-sm">Coba kata kunci lain.</p>
         </div>
       )}
     </div>
