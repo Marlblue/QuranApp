@@ -99,7 +99,7 @@ const Home = () => {
       )}
 
       {/* Search */}
-      <div className="mb-6 sticky top-14 z-30 -mx-4 px-4 py-3 glass">
+      <div className="mb-6 sticky top-16 z-30 -mx-4 px-4 py-3 glass">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-subtle w-5 h-5 pointer-events-none" />
           <input
@@ -130,7 +130,7 @@ const Home = () => {
 
       {/* Surah List */}
       {!isLoading && !error && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 stagger-children">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {filteredSurahs?.map((surah) => (
             <SurahCard key={surah.number} surah={surah} />
           ))}

@@ -9,8 +9,8 @@ const Tasbih: React.FC = () => {
     return savedCount ? Number(savedCount) : 0;
   });
   const [target, setTarget] = useState(33);
-  const [soundEnabled, setSoundEnabled] = useState(true);
   const [vibrationEnabled, setVibrationEnabled] = useState(true);
+  const [showConfirmReset, setShowConfirmReset] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("tasbih-count", count.toString());
@@ -33,9 +33,8 @@ const Tasbih: React.FC = () => {
   };
 
   const handleReset = () => {
-    if (window.confirm("Reset hitungan?")) {
-      setCount(0);
-    }
+    setCount(0);
+    setShowConfirmReset(false);
   };
 
   // Logic: Biar pas angka = target (misal 33), progress barnya penuh 100% dulu, 
@@ -65,12 +64,6 @@ const Tasbih: React.FC = () => {
         {/* Controls */}
         <div className="w-full flex justify-between items-center z-10 mb-8">
           <div className="flex gap-1">
-            <button
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className="p-2.5 rounded-xl text-text-subtle hover:text-text-heading hover:bg-surface-hover transition-colors active:scale-90"
-            >
-              {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </button>
             <button
               onClick={() => setVibrationEnabled(!vibrationEnabled)}
               className="p-2.5 rounded-xl text-text-subtle hover:text-text-heading hover:bg-surface-hover transition-colors active:scale-90"
@@ -122,13 +115,33 @@ const Tasbih: React.FC = () => {
             <div className="w-24 h-24 lg:w-28 lg:h-28 rounded-full border-4 border-surface/20" />
           </button>
           
-          <button
-            onClick={handleReset}
-            className="flex items-center gap-2 text-text-subtle hover:text-red-400 transition-colors text-sm font-medium active:scale-90 px-4 py-2 rounded-xl hover:bg-red-900/10"
-          >
-            <RotateCcw size={16} />
-            Reset Hitungan
-          </button>
+          {showConfirmReset ? (
+            <div className="flex flex-col items-center gap-3 animate-fade-in p-4 rounded-2xl bg-surface-input border border-border mt-2">
+              <p className="text-sm font-medium text-text-heading">Yakin ingin reset hitungan?</p>
+              <div className="flex gap-2 w-full">
+                <button
+                  onClick={handleReset}
+                  className="flex-1 px-4 py-2 bg-red-900/20 text-red-400 hover:bg-red-900/40 rounded-xl text-sm font-semibold transition-colors active:scale-95"
+                >
+                  Ya, Reset
+                </button>
+                <button
+                  onClick={() => setShowConfirmReset(false)}
+                  className="flex-1 px-4 py-2 bg-surface-hover text-text-muted hover:text-text-heading rounded-xl text-sm font-semibold transition-colors active:scale-95"
+                >
+                  Batal
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowConfirmReset(true)}
+              className="flex items-center gap-2 text-text-subtle hover:text-red-400 transition-colors text-sm font-medium active:scale-90 px-4 py-2 rounded-xl hover:bg-red-900/10"
+            >
+              <RotateCcw size={16} />
+              Reset Hitungan
+            </button>
+          )}
         </div>
       </div>
     </div>

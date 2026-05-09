@@ -15,7 +15,11 @@ const SurahDetail = () => {
   const { data: surah, isLoading, error } = useSurahDetail(surahNumber);
 
   useDocumentTitle(surah ? `Surah ${surah.name_latin} | QuranApp` : "Memuat...");
-  const { isPlaying, currentSurah, currentAyah, setAudio, pause } = useAudioStore();
+  const isPlaying = useAudioStore((state) => state.isPlaying);
+  const currentSurah = useAudioStore((state) => state.currentSurah);
+  const currentAyah = useAudioStore((state) => state.currentAyah);
+  const setAudio = useAudioStore((state) => state.setAudio);
+  const pause = useAudioStore((state) => state.pause);
   const { lastRead, setLastRead } = useLastReadStore();
   const { addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -25,6 +29,10 @@ const SurahDetail = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [surahNumber]);
 
   useEffect(() => {
     if (surah && location.hash) {
@@ -78,7 +86,7 @@ const SurahDetail = () => {
   return (
     <div className="min-h-screen animate-fade-in">
       {/* Sticky Header */}
-      <div className="sticky top-14 z-30 glass border-b border-border">
+      <div className="sticky top-16 z-30 glass border-b border-border">
         <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between">
           <Link to="/" className="p-2 text-text-muted hover:text-accent rounded-xl transition-colors active:scale-95">
             <ArrowLeft size={20} />
@@ -126,7 +134,6 @@ const SurahDetail = () => {
               ayah={ayah}
               isPlaying={isPlaying && currentSurah === surah.number && currentAyah === ayah.number_in_surah}
               onPlay={handlePlay}
-              onPause={pause}
               isBookmarked={isBookmarked(surah.number, ayah.number_in_surah)}
               onToggleBookmark={() =>
                 isBookmarked(surah.number, ayah.number_in_surah)

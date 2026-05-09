@@ -11,6 +11,7 @@ const DailyPrayers = lazy(() => import("./pages/DailyPrayers"));
 const Tasbih = lazy(() => import("./pages/Tasbih"));
 const TahlilWirid = lazy(() => import("./pages/TahlilWirid"));
 const ZakatCalculator = lazy(() => import("./pages/ZakatCalculator"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const PageLoader = () => (
   <div className="flex justify-center items-center min-h-[60vh]">
@@ -35,6 +36,7 @@ function App() {
           <Route path="/tasbih" element={<Tasbih />} />
           <Route path="/tahlil-wirid" element={<TahlilWirid />} />
           <Route path="/zakat" element={<ZakatCalculator />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </MainLayout>

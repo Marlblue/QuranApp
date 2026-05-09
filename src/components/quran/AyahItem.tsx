@@ -9,8 +9,6 @@ interface AyahItemProps {
   ayah: Ayah;
   isPlaying: boolean;
   onPlay: (ayahNumber: number, url: string) => void;
-  onPause: () => void;
-  isLastRead?: boolean;
   isBookmarked: boolean;
   onToggleBookmark: () => void;
   tafsir?: string;
@@ -101,4 +99,4 @@ const AyahItem: React.FC<AyahItemProps> = ({
   );
 };
 
-export default AyahItem;
+export default React.memo(AyahItem);

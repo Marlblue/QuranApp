@@ -38,7 +38,7 @@ const AudioPlayer = () => {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="fixed bottom-[64px] lg:bottom-0 left-0 right-0 z-50 glass border-t border-border animate-slide-up">
+    <div className="fixed bottom-[calc(60px+env(safe-area-inset-bottom))] lg:bottom-0 left-0 right-0 z-50 glass border-t border-border animate-slide-up">
       {/* Progress bar (thin line at top) */}
       <div className="h-0.5 bg-forest-800">
         <div

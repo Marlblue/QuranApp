@@ -78,11 +78,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             
             {/* Desktop Dropdown for More */}
             <div className="relative group">
-              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-text-muted hover:bg-surface-hover hover:text-text transition-all">
+              <button 
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-text-muted hover:bg-surface-hover hover:text-text focus:text-text focus:bg-surface-hover transition-all outline-none"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
                 <Grip size={18} />
                 Lainnya
               </button>
-              <div className="absolute top-full right-0 mt-2 w-56 bg-surface border border-border rounded-2xl shadow-xl shadow-black/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right z-50">
+              <div className="absolute top-full right-0 mt-2 w-56 bg-surface border border-border rounded-2xl shadow-xl shadow-black/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible focus-within:opacity-100 focus-within:visible transition-all duration-200 origin-top-right z-50">
                 <div className="p-2 space-y-1">
                   {menuLinks.map((link) => (
                     <Link
