@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSurahList } from "@/hooks/useSurah";
 import SurahCard from "@/components/quran/SurahCard";
-import { Search, ChevronRight, ArrowRight } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
 import { useLastReadStore } from "@/store/useLastReadStore";
 import { Link } from "react-router-dom";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";

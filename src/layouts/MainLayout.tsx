@@ -15,7 +15,6 @@ import {
   ChevronRight,
   X,
   RotateCcw,
-  User,
 } from "lucide-react";
 import AudioPlayer from "../components/quran/AudioPlayer";
 import { useSettingsStore } from "@/store/useSettingsStore";
@@ -44,19 +43,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     { path: "/tasbih", label: "Tasbih Digital", icon: Hash },
     { path: "/zakat", label: "Kalkulator Zakat", icon: Calculator },
   ];
-
-  const getPageTitle = (path: string) => {
-    if (path === "/") return "Al-Quran";
-    if (path === "/prayer-times") return "Jadwal Sholat";
-    if (path === "/bookmarks") return "Tersimpan";
-    if (path === "/doa-harian") return "Doa Harian";
-    if (path === "/asmaul-husna") return "Asmaul Husna";
-    if (path === "/tahlil-wirid") return "Tahlil & Wirid";
-    if (path === "/tasbih") return "Tasbih Digital";
-    if (path === "/zakat") return "Kalkulator Zakat";
-    if (path.startsWith("/surah/")) return "Baca Surah";
-    return "QuranApp";
-  };
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col">
