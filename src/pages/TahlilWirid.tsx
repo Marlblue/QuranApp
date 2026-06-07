@@ -8,56 +8,56 @@ const TahlilWirid: React.FC = () => {
   const data = activeTab === "tahlil" ? tahlilData : wiridData;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 animate-fade-in">
-      <div className="mb-6">
-        <h1 className="font-display text-2xl font-bold text-text-heading">
+    <div className="max-w-3xl mx-auto px-4 sm:px-8 py-10 animate-fade-in">
+      <div className="mb-10 text-center">
+        <h1 className="text-[34px] font-semibold text-ink tracking-tight mb-2">
           Tahlil & Wirid
         </h1>
-        <p className="text-sm text-text-muted mt-1">
+        <p className="text-[17px] text-ink-muted">
           Bacaan Tahlil dan Wirid sesudah sholat
         </p>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6 bg-surface-input p-1 rounded-2xl">
+      {/* Apple Segmented Control */}
+      <div className="flex gap-1 mb-10 bg-canvas-parchment p-1 rounded-full border border-hairline max-w-xs mx-auto">
         <button
           onClick={() => setActiveTab("tahlil")}
-          className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+          className={`flex-1 py-2.5 rounded-full text-[14px] font-semibold transition-all ${
             activeTab === "tahlil"
-              ? "bg-accent text-surface shadow-sm"
-              : "text-text-muted"
+              ? "bg-canvas text-ink shadow-sm"
+              : "text-ink-faint hover:text-ink"
           }`}
         >
           Tahlil
         </button>
         <button
           onClick={() => setActiveTab("wirid")}
-          className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+          className={`flex-1 py-2.5 rounded-full text-[14px] font-semibold transition-all ${
             activeTab === "wirid"
-              ? "bg-accent text-surface shadow-sm"
-              : "text-text-muted"
+              ? "bg-canvas text-ink shadow-sm"
+              : "text-ink-faint hover:text-ink"
           }`}
         >
           Wirid
         </button>
       </div>
 
-      <div className="space-y-4 stagger-children">
+      <div className="space-y-6">
         {data.map((item) => (
           <div
             key={item.id}
-            className="p-5 rounded-2xl bg-surface-card border border-border"
+            className="bg-canvas border border-hairline rounded-[24px] p-6 sm:p-8"
           >
-            <div className="text-right mb-4" dir="rtl">
-              <p className="font-arabic text-xl leading-loose text-text-heading">
+            <div className="text-right mb-6" dir="rtl">
+              <p className="font-arabic text-[24px] leading-[2] text-ink">
                 {item.arabic}
               </p>
             </div>
-            <div className="space-y-2">
-              <p className="text-accent/80 text-sm italic">
+            <div className="space-y-3">
+              <p className="text-primary text-[15px] italic font-medium">
                 {item.latin}
               </p>
-              <p className="text-sm text-text-secondary leading-relaxed">
+              <p className="text-[15px] text-ink-muted leading-relaxed">
                 {item.translation}
               </p>
             </div>

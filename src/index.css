@@ -1,48 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Inter", system-ui, -apple-system, sans-serif;
   --font-arabic: "Amiri", serif;
 
-  /* Luxe Serenity: Dark Only Palette */
-  --color-forest-50: #1a2e20;
-  --color-forest-100: #1f3726;
-  --color-forest-200: #264530;
-  --color-forest-300: #2f5a3d;
-  --color-forest-400: #3a7a50;
-  --color-forest-500: #4a9a65;
-  --color-forest-600: #5cb87a;
-  --color-forest-700: #6dd492;
-  --color-forest-800: #162117;
-  --color-forest-900: #0F1711;
-
-  --color-gold-50: #2a2318;
-  --color-gold-100: #3d3220;
-  --color-gold-200: #5a4a2e;
-  --color-gold-300: #7a6438;
-  --color-gold-400: #d9a44a;
-  --color-gold-500: #C5A059;
-  --color-gold-600: #e4bb6d;
-
-  --color-surface: #0F1711;
-  --color-surface-card: rgba(22, 33, 23, 0.6);
-  --color-surface-hover: rgba(30, 45, 32, 0.8);
-  --color-surface-input: #162117;
-  --color-surface-glass: rgba(15, 23, 17, 0.85);
-
-  --color-border: rgba(42, 69, 48, 0.4);
-  --color-border-hover: rgba(58, 122, 80, 0.5);
-
-  --color-text: #e8e4dd;
-  --color-text-secondary: #b0a99a;
-  --color-text-muted: #8a857c;
-  --color-text-subtle: #5e5a53;
-  --color-text-heading: #f0ece4;
-
-  --color-accent: #5cb87a;
-  --color-accent-hover: #6dd492;
-  --color-accent-muted: rgba(92, 184, 122, 0.15);
+  --color-primary: #0066cc;
+  --color-primary-focus: #0071e3;
+  --color-primary-on-dark: #2997ff;
+  
+  --color-ink: #1d1d1f;
+  --color-ink-muted: #333333;
+  --color-ink-faint: #7a7a7a;
+  
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl: #fafafc;
+  --color-surface-tile: #272729;
+  --color-surface-tile-alt: #2a2a2c;
+  --color-surface-black: #000000;
+  --color-surface-chip: rgba(210, 210, 215, 0.64);
+  
+  --color-hairline: #e0e0e0;
+  --color-divider-soft: #f0f0f0;
 }
 
 /* ===== Base Styles ===== */
@@ -53,19 +33,155 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-surface);
-  color: var(--color-text);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.02em;
 }
 
-/* ===== Typography ===== */
-.font-display {
+/* ===== Typography Additions ===== */
+h1, h2, h3, .font-display {
   font-family: var(--font-display);
+  letter-spacing: -0.04em;
 }
 
 .font-arabic {
   font-family: var(--font-arabic);
+}
+
+/* Base interactive elements */
+button, a {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, background-color 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* ===== Glass / Frosted Effect ===== */
+.glass {
+  background: rgba(245, 245, 247, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* ===== Shadows (Minimal) ===== */
+.shadow-product {
+  box-shadow: 3px 5px 30px 0 rgba(0, 0, 0, 0.22);
+}
+
+/* ===== Safe Area for Mobile ===== */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ===== Custom Utilities ===== */
+.text-apple-body {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.02em;
+}
+
+.text-apple-lead {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.14;
+}
+
+.text-apple-display {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.text-apple-hero {
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.04em;
+}
+
+/* ===== Toggle Switch ===== */
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--color-hairline);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.toggle-switch.active {
+  background: var(--color-primary);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.toggle-switch.active::after {
+  transform: translateX(20px);
+}
+
+/* Input Range Apple style */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-hairline);
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: 1px solid var(--color-hairline);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+/* Skeleton loader adapted for lighter theme */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-canvas-parchment) 25%,
+    var(--color-surface-pearl) 50%,
+    var(--color-canvas-parchment) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
 }
 
 /* ===== Scrollbar ===== */
@@ -79,7 +195,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-forest-200);
+  background: var(--color-hairline);
   border-radius: 999px;
 }
 
@@ -102,11 +218,6 @@ body {
 @keyframes scale-in {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
 
 .animate-fade-in {
@@ -136,81 +247,3 @@ body {
 .stagger-children > *:nth-child(5) { animation-delay: 200ms; }
 .stagger-children > *:nth-child(6) { animation-delay: 250ms; }
 
-/* ===== Skeleton Loader ===== */
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-forest-800) 25%,
-    var(--color-forest-200) 50%,
-    var(--color-forest-800) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 8px;
-}
-
-/* ===== Glass Effect ===== */
-.glass {
-  background: var(--color-surface-glass);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-}
-
-/* ===== Safe Area for Mobile ===== */
-.pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-/* ===== Custom Range Input ===== */
-input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--color-forest-200);
-  outline: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--color-gold-400);
-  cursor: pointer;
-  border: 2px solid var(--color-forest-800);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-}
-
-/* ===== Toggle Switch ===== */
-.toggle-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  background: var(--color-forest-200);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.toggle-switch.active {
-  background: var(--color-accent);
-}
-
-.toggle-switch::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease;
-}
-
-.toggle-switch.active::after {
-  transform: translateX(20px);
-}

@@ -12,13 +12,13 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.png"],
+      includeAssets: ["favicon.svg"],
       manifest: {
         name: "QuranApp Digital",
         short_name: "QuranApp",
         description: "Aplikasi Al-Quran Digital dengan Audio dan Jadwal Sholat",
-        theme_color: "#1B3022",
-        background_color: "#FCF9F2",
+        theme_color: "#000000",
+        background_color: "#FFFFFF",
         display: "standalone",
         icons: [
           {

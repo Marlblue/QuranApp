@@ -4,7 +4,7 @@ import { useSurahDetail } from "@/hooks/useSurah";
 import AyahItem from "@/components/quran/AyahItem";
 import { useAudioStore } from "@/store/useAudioStore";
 import { useBookmarkStore } from "@/store/useBookmarkStore";
-import { ArrowLeft, ArrowRight, ArrowUp, PlayCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
 import { useLastReadStore } from "@/store/useLastReadStore";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
@@ -19,7 +19,6 @@ const SurahDetail = () => {
   const currentSurah = useAudioStore((state) => state.currentSurah);
   const currentAyah = useAudioStore((state) => state.currentAyah);
   const setAudio = useAudioStore((state) => state.setAudio);
-  const pause = useAudioStore((state) => state.pause);
   const { lastRead, setLastRead } = useLastReadStore();
   const { addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -61,11 +60,11 @@ const SurahDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-6 animate-fade-in">
-        <div className="skeleton h-10 w-32 mb-6 rounded-xl" />
-        <div className="skeleton h-48 rounded-2xl mb-8" />
+      <div className="max-w-3xl mx-auto px-4 py-16 animate-fade-in">
+        <div className="skeleton h-10 w-32 mb-6 rounded-xl mx-auto" />
+        <div className="skeleton h-32 rounded-2xl mb-16 mx-auto w-full max-w-md" />
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="skeleton h-32 rounded-2xl mb-4" />
+          <div key={i} className="skeleton h-32 rounded-2xl mb-8" />
         ))}
       </div>
     );
@@ -73,7 +72,7 @@ const SurahDetail = () => {
 
   if (error || !surah) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-20 text-center text-red-400">
+      <div className="max-w-3xl mx-auto px-4 py-20 text-center text-red-500 font-medium">
         Gagal memuat surah: {error?.message || "Surah tidak ditemukan"}
       </div>
     );
@@ -84,49 +83,46 @@ const SurahDetail = () => {
   const isBismillahShown = surahNumber !== 1 && surahNumber !== 9;
 
   return (
-    <div className="min-h-screen animate-fade-in">
-      {/* Sticky Header */}
-      <div className="sticky top-16 z-30 glass border-b border-border">
-        <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between">
-          <Link to="/" className="p-2 text-text-muted hover:text-accent rounded-xl transition-colors active:scale-95">
-            <ArrowLeft size={20} />
+    <div className="min-h-screen bg-canvas animate-fade-in">
+      <div className="max-w-3xl mx-auto px-4 sm:px-8 py-8">
+        
+        {/* Back button */}
+        <div className="mb-6">
+          <Link to="/" className="inline-flex items-center gap-2 text-primary hover:opacity-80 transition-opacity font-medium text-[14px]">
+            <ArrowLeft size={16} /> Kembali
           </Link>
-          <div className="text-center">
-            <h1 className="font-bold text-sm text-text">{surah.name_latin}</h1>
-            <p className="text-[11px] text-text-muted">{surah.translation} • {surah.number_of_ayahs} Ayat</p>
-          </div>
-          <div className="w-9" />
         </div>
-      </div>
 
-      <div className="max-w-3xl mx-auto px-4 py-6">
-        {/* Surah Info */}
-        <div className="bg-forest-100 rounded-2xl p-8 text-center mb-8 relative overflow-hidden">
-          <div className="relative z-10">
-            <p className="font-arabic text-4xl leading-relaxed mb-3 text-text-heading">{surah.name_arabic}</p>
-            <h2 className="font-display text-2xl font-bold mb-1 text-text-heading">{surah.name_latin}</h2>
-            <p className="text-text-secondary mb-4 text-sm">{surah.translation}</p>
-            <div className="inline-flex items-center gap-3 text-xs font-semibold bg-surface-hover px-5 py-2 rounded-full border border-border">
-              <span className="uppercase tracking-widest text-text-muted">{surah.place}</span>
-              <span className="text-text-subtle">•</span>
-              <span className="text-text-muted">{surah.number_of_ayahs} Ayat</span>
-            </div>
-          </div>
-          <div className="absolute -right-8 -bottom-8 opacity-[0.04]">
-            <PlayCircle size={200} strokeWidth={1} />
+        {/* Surah Hero Info */}
+        <div className="py-12 text-center mb-8">
+          <p className="font-arabic text-[56px] leading-relaxed mb-4 text-primary">
+            {surah.name_arabic}
+          </p>
+          <h1 className="text-apple-display text-ink mb-1">
+            {surah.name_latin}
+          </h1>
+          <p className="text-apple-body text-ink-muted mb-6">
+            {surah.translation}
+          </p>
+          <div className="inline-flex items-center gap-3 text-[12px] font-medium bg-canvas-parchment px-4 py-1.5 rounded-full border border-hairline">
+            <span className="uppercase tracking-widest text-ink-faint">{surah.place}</span>
+            <span className="text-ink-faint">•</span>
+            <span className="text-ink-faint">{surah.number_of_ayahs} Ayat</span>
           </div>
         </div>
 
         {/* Bismillah */}
         {isBismillahShown && (
-          <div className="text-center mb-8 py-4">
-            <p className="font-arabic text-2xl text-text leading-loose">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+          <div className="text-center mb-16 py-4">
+            <p className="font-arabic text-[28px] text-ink leading-loose">
+              بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ
+            </p>
           </div>
         )}
 
-        {/* Ayah List */}
-        <div className="space-y-4">
-          {surah.verses.map((ayah) => (
+        {/* Ayah List (Clean, Hairline separation) */}
+        <div className="flex flex-col">
+          {surah.verses.map((ayah, index) => (
             <AyahItem
               key={ayah.number_in_surah}
               surahNumber={surah.number}
@@ -141,28 +137,32 @@ const SurahDetail = () => {
                   : addBookmark({ surahNumber: surah.number, surahName: surah.name_latin, ayahNumber: ayah.number_in_surah, via: "manual" })
               }
               tafsir={surah.tafsir?.find((t) => t.ayah === ayah.number_in_surah)?.teks}
+              isLast={index === surah.verses.length - 1}
             />
           ))}
         </div>
 
-        {/* Nav */}
-        <div className="flex gap-3 mt-10 mb-4">
+        {/* Navigation Footer */}
+        <div className="flex gap-4 mt-16 mb-8">
           {prevSurahNum ? (
-            <Link to={`/surah/${prevSurahNum}`} className="flex-1 flex items-center justify-center gap-2 p-4 rounded-2xl bg-surface-card border border-border hover:border-border-hover transition-all active:scale-[0.98] text-sm font-medium text-text-secondary">
+            <Link to={`/surah/${prevSurahNum}`} className="flex-1 flex items-center justify-center gap-2 py-4 rounded-[18px] bg-canvas-parchment hover:bg-hairline transition-colors active:scale-[0.98] text-[14px] font-semibold text-ink">
               <ArrowLeft size={16} /> Sebelumnya
             </Link>
           ) : <div className="flex-1" />}
           {nextSurahNum ? (
-            <Link to={`/surah/${nextSurahNum}`} className="flex-1 flex items-center justify-center gap-2 p-4 rounded-2xl bg-surface-card border border-border hover:border-border-hover transition-all active:scale-[0.98] text-sm font-medium text-text-secondary">
+            <Link to={`/surah/${nextSurahNum}`} className="flex-1 flex items-center justify-center gap-2 py-4 rounded-[18px] bg-canvas-parchment hover:bg-hairline transition-colors active:scale-[0.98] text-[14px] font-semibold text-ink">
               Selanjutnya <ArrowRight size={16} />
             </Link>
           ) : <div className="flex-1" />}
         </div>
       </div>
 
+      {/* Floating Scroll Top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`fixed bottom-20 lg:bottom-8 right-4 lg:right-8 p-3 bg-accent text-surface rounded-full shadow-lg shadow-accent/20 transition-all z-40 active:scale-95 ${showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+        className={`fixed bottom-[100px] lg:bottom-10 right-6 p-3 bg-canvas-parchment text-ink rounded-full border border-hairline shadow-sm transition-all z-40 hover:bg-hairline active:scale-95 ${
+          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
         aria-label="Kembali ke atas"
       >
         <ArrowUp size={20} />

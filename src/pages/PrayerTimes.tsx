@@ -62,108 +62,102 @@ const PrayerTimes = () => {
   }, [data, prayers]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 animate-fade-in">
-      {/* Header Card */}
-      <div className="bg-forest-800 rounded-2xl p-6 text-text mb-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5">
-          <div>
-            <h1 className="font-display text-2xl font-bold mb-2">Jadwal Sholat</h1>
-            <div className="flex items-center gap-2 text-text-muted text-sm mb-1">
-              <MapPin size={14} />
-              <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="bg-transparent border-b border-border focus:outline-none focus:border-text-heading pb-0.5 cursor-pointer text-sm"
-              >
-                {["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Medan", "Makassar"].map(
-                  (c) => (
-                    <option key={c} value={c} className="bg-surface text-text">
+    <div className="animate-fade-in flex flex-col min-h-[calc(100vh-96px)]">
+      <div className="max-w-3xl mx-auto w-full px-4 sm:px-8 py-8 flex-1">
+        
+        {/* Header Hero */}
+        <div className="bg-surface-tile rounded-[32px] p-8 sm:p-10 text-white mb-10 overflow-hidden relative shadow-product">
+          <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8">
+            <div className="space-y-4">
+              <div>
+                <h1 className="text-[34px] font-semibold tracking-tight mb-1">Jadwal Sholat</h1>
+                {data && (
+                  <div className="flex items-center gap-2 text-white/70 text-[14px]">
+                    <Calendar size={14} />
+                    <span>
+                      {data.date.readable} • {data.date.hijri.date} {data.date.hijri.month.en}
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10">
+                <MapPin size={16} />
+                <select
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer text-[15px] font-medium appearance-none pr-4"
+                >
+                  {["Jakarta", "Bandung", "Surabaya", "Yogyakarta", "Medan", "Makassar"].map((c) => (
+                    <option key={c} value={c} className="text-ink bg-canvas">
                       {c}
                     </option>
-                  ),
-                )}
-              </select>
-            </div>
-            {data && (
-              <div className="flex items-center gap-2 text-text-muted text-xs">
-                <Calendar size={12} />
-                <span>
-                  {data.date.readable} / {data.date.hijri.date}{" "}
-                  {data.date.hijri.month.en}
-                </span>
+                  ))}
+                </select>
               </div>
-            )}
-          </div>
+            </div>
 
-          {isLoading ? (
-            <Loader2 className="animate-spin text-text-muted" size={32} />
-          ) : error ? (
-            <p className="text-red-400 text-sm">Gagal memuat</p>
-          ) : (
-            nextPrayer && (
-              <div className="bg-surface-card rounded-xl p-4 text-center min-w-[120px] border border-border">
-                <p className="text-text-muted text-xs mb-0.5">
+            {isLoading ? (
+              <div className="h-[88px] flex items-center justify-center w-[160px]">
+                <Loader2 className="animate-spin text-white/50" size={32} />
+              </div>
+            ) : error ? (
+              <div className="h-[88px] flex items-center w-[160px]">
+                <p className="text-red-400 text-[14px]">Gagal memuat jadwal</p>
+              </div>
+            ) : nextPrayer && (
+              <div className="bg-white/10 backdrop-blur rounded-[20px] p-5 text-center min-w-[160px] border border-white/20">
+                <p className="text-white/70 text-[12px] font-semibold uppercase tracking-wider mb-1">
                   Menuju {nextPrayer.name}
                 </p>
-                <p className="text-2xl font-bold font-mono tracking-wider text-text-heading">
+                <p className="text-[28px] font-bold tracking-tight mb-0.5">
                   {nextPrayer.timeLeft}
                 </p>
-                <p className="text-text-muted text-[11px]">
+                <p className="text-white/60 text-[12px]">
                   Pukul {nextPrayer.time}
                 </p>
               </div>
-            )
-          )}
+            )}
+          </div>
+          
+          {/* Decorative background icon */}
+          <div className="absolute right-[-10%] top-[-20%] w-[120%] sm:w-[60%] h-[150%] opacity-50 pointer-events-none">
+            <img src="/images/prayer_moon.png" alt="" className="w-full h-full object-contain object-right" />
+          </div>
+        </div>
+
+        {/* Prayer Times Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {prayers.map((prayer) => {
+            const isNext = nextPrayer?.name === prayer.name;
+            return (
+              <div
+                key={prayer.name}
+                className={`p-6 rounded-[24px] text-center transition-all ${
+                  isNext
+                    ? "bg-canvas border-2 border-primary shadow-sm scale-[1.02]"
+                    : "bg-canvas border border-hairline hover:border-ink-muted"
+                }`}
+              >
+                <Clock
+                  size={24}
+                  className={`mx-auto mb-3 ${isNext ? "text-primary" : "text-ink-faint"}`}
+                />
+                <h3 className={`text-[14px] font-medium mb-1 ${isNext ? "text-primary" : "text-ink-muted"}`}>
+                  {prayer.name}
+                </h3>
+                <p className={`text-[24px] font-semibold tracking-tight ${isNext ? "text-ink" : "text-ink"}`}>
+                  {prayer.time || "--:--"}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
-
-      {/* Prayer Times Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 stagger-children">
-        {prayers.map((prayer) => {
-          const isNext = nextPrayer?.name === prayer.name;
-          return (
-            <div
-              key={prayer.name}
-              className={`p-4 rounded-2xl text-center transition-all ${
-                isNext
-                  ? "bg-forest-800 border-2 border-gold-400 shadow-md"
-                  : "bg-surface-card border border-border"
-              }`}
-            >
-              <Clock
-                size={20}
-                className={`mx-auto mb-2 ${
-                  isNext
-                    ? "text-gold-400"
-                    : "text-text-subtle"
-                }`}
-              />
-              <h3
-                className={`text-sm font-semibold mb-1 ${
-                  isNext
-                    ? "text-text-heading"
-                    : "text-text-muted"
-                }`}
-              >
-                {prayer.name}
-              </h3>
-              <p
-                className={`text-xl font-bold font-mono ${
-                  isNext
-                    ? "text-gold-400"
-                    : "text-text-heading"
-                }`}
-              >
-                {prayer.time || "--:--"}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-
-      <p className="mt-8 text-center text-xs text-text-subtle">
-        Jadwal sholat oleh Aladhan.com
-      </p>
+      
+      <footer className="bg-canvas-parchment py-8 mt-12 text-center text-[12px] text-ink-faint">
+        Jadwal sholat disediakan oleh Aladhan.com
+      </footer>
     </div>
   );
 };

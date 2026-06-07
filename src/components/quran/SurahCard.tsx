@@ -10,24 +10,27 @@ const SurahCard: React.FC<SurahCardProps> = ({ surah }) => {
   return (
     <Link
       to={`/surah/${surah.number}`}
-      className="flex items-center gap-4 p-4 rounded-2xl bg-surface-card border border-border hover:border-border-hover transition-all active:scale-[0.98] group"
+      className="block bg-canvas border border-hairline rounded-[18px] p-5 hover:border-primary-focus hover:shadow-sm transition-all active:scale-[0.98] group"
     >
-      <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center flex-shrink-0">
-        <span className="text-sm font-bold text-text-muted group-hover:text-gold-400 transition-colors">
-          {surah.number}
+      <div className="flex items-center justify-between mb-3">
+        <div className="w-8 h-8 rounded-full bg-canvas-parchment flex items-center justify-center flex-shrink-0">
+          <span className="text-[14px] font-semibold text-ink-faint group-hover:text-primary transition-colors">
+            {surah.number}
+          </span>
+        </div>
+        <span className="font-arabic text-2xl text-ink group-hover:text-primary transition-colors">
+          {surah.name_arabic}
         </span>
       </div>
-      <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-[15px] text-text group-hover:text-accent transition-colors truncate">
+      
+      <div>
+        <h3 className="font-semibold text-[17px] text-ink truncate">
           {surah.name_latin}
         </h3>
-        <p className="text-xs text-text-muted truncate">
+        <p className="text-[14px] text-ink-muted mt-0.5 truncate">
           {surah.translation} • {surah.number_of_ayahs} Ayat
         </p>
       </div>
-      <p className="font-arabic text-xl text-gold-400 flex-shrink-0">
-        {surah.name_arabic}
-      </p>
     </Link>
   );
 };
